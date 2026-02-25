@@ -7,8 +7,14 @@ export const apiResponse: unknown = [
 ];
 
 export function getUsersData(): User[] {
-  return apiResponse as User[]; // intentionally unsafe
+  for (const item of apiResponse as any[]) {
+    if (typeof item.age == "string") {
+      item.age = Number(item.age); // ensure age is a number
+    }
+  }
+  return apiResponse as User[];
 }
+
 
 export function formatAges(users: User[]): string[] {
   return users.map((u) => u.age.toFixed(0));
